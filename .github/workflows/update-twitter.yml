@@ -1,4 +1,4 @@
-name: Post New Shiba
+name: Update Twitter User Name
 on:
   schedule:
     - cron: "0 * * * *"
