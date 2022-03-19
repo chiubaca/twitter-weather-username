@@ -1,9 +1,28 @@
 const Twitter = require("twitter");
 const fetch = require("node-fetch");
-const request = require("request").defaults({ encoding: null });
+
+const CITY = "london";
+
+const EMOJI_KEY = {
+  Thunderstorm: "⛈️",
+  Drizzle: "🌧️",
+  Rain: "🌧️",
+  Snow: "🌨️",
+  Mist: "🌫️",
+  Smoke: "🌫️",
+  Haze: "🌫️",
+  Dust: "🌫️",
+  Fog: "🌫️",
+  Sand: "🌫️",
+  Ash: "🌋",
+  Squall: "🌫️",
+  Tornado: "🌪️",
+  Clear: "🌞",
+  Clouds: "☁️",
+};
 
 if (process.env.NODE_ENV === "development") {
-  require("dotenv").config()
+  require("dotenv").config();
 }
 
 const client = new Twitter({
@@ -11,27 +30,29 @@ const client = new Twitter({
   consumer_secret: process.env.CONSUMER_SECRET,
   access_token_key: process.env.ACCESS_TOKEN_KEY,
   access_token_secret: process.env.ACCESS_TOKEN_SECRET,
-})
+});
 
-function sendImageToTwitter(imageBuffer) {
-  // Adapted from this example - https://github.com/desmondmorris/node-twitter/tree/master/examples#media
-  client.post("media/upload", { media: imageBuffer }, (error, media) => {
-    if (error) {
-      console.error("Something went wrong uploading image...😫", error)
-    } else {
-      client.post("statuses/update", { status: "", media_ids: media.media_id_string })
-        .then(resp => console.log("🐕‍🦺New shibe successfully posted!🐕‍🦺"))
-        .catch(error => console.error("Thats ruff, something went wrong posting to Twitter...😒", error))
+function updateTwitterUsername(emoji) {
+  client.post(
+    "account/update_profile",
+    { name: `Alex Chiu (${emoji})` },
+    (error) => {
+      if (error) {
+        console.log("Problem updating twitter", error);
+      }
+      console.log("updated twitter username");
     }
-  });
+  );
 }
 
-fetch("http://shibe.online/api/shibes?count=1&urls=true&httpsUrls=true")
+fetch(
+  `https://api.openweathermap.org/data/2.5/weather?q=${CITY}&appid=${process.env.OWM_API_KEY}`
+)
   .then((res) => res.json())
-  .then((json) => json[0]) 
-  .then((imageURL) => {
-    request.get(imageURL, (err, res, body) => {
-      sendImageToTwitter(body);
-    });
+  .then((data) => {
+    const owmWeatherCategory = data.weather[0].main;
+    updateTwitterUsername(EMOJI_KEY[owmWeatherCategory] || "🙈");
   })
-  .catch((error) => console.error("There was an error fetching a shibe...😑", error));
+  .catch((err) => {
+    console.log("Problem getting weather...", err);
+  });

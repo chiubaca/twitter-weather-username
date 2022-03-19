@@ -1,13 +1,13 @@
 {
   "name": "shiba-every-hour",
   "version": "1.0.0",
-  "description": "GitHub Action to power @ShibaEveryHour",
+  "description": "GitHub Action to update @chiubaca with the weather every hour",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "lint": "eslint index.js",
-    "shibe": "node index.js",
-    "dev-shibe": "env NODE_ENV=development node index.js"
+    "twitter-update": "node index.js",
+    "dev-twitter-update": "env NODE_ENV=development node index.js"
   },
   "dependencies": {
     "dotenv": "^8.2.0",
@@ -20,14 +20,5 @@
     "eslint-config-airbnb": "^18.2.0",
     "eslint-plugin-import": "^2.22.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/chiubaca/shiba-every-hour.git"
-  },
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/chiubaca/shiba-every-hour/issues"
-  },
-  "homepage": "https://github.com/chiubaca/shiba-every-hour#readme"
+  "homepage": "https://github.com/chiubaca/twitter-weather-username#readme"
 }
