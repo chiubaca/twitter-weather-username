@@ -35,12 +35,12 @@ const client = new Twitter({
 function updateTwitterUsername(emoji) {
   client.post(
     "account/update_profile",
-    { name: `Alex Chiu (${emoji})` },
+    { name: `chiubaca (${emoji})` },
     (error) => {
       if (error) {
         console.log("Problem updating twitter", error);
       }
-      console.log("updated twitter username");
+      console.log("updated twitter username with " + emoji);
     }
   );
 }
